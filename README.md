@@ -13,11 +13,10 @@ This app is a To-Do List consisting of:
   * An Add Button that adds the new task to the list of pending tasks.
 * An unoreded list with our pending tasks.
 
-
-
-
 ---
-## Notes
+## Notes 
+
+⚠️ Uncomplete
 
 ### Managing A Component Tree:
 How our state is handled across the app and different components.      
