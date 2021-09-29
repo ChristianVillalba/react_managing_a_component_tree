@@ -16,19 +16,45 @@ This app is a To-Do List consisting of:
 ---
 ## Notes 
 
-⚠️ Uncomplete
-
 ### Managing A Component Tree:
 How our state is handled across the app and different components.      
 
-#### Stateless Component
+We will transform our app Components     
+from stateless indiviual Components    
+to individual Components with State    
 
-A stateless component is not trying to change itself or anything else.      
-It is receiving some read-only properties and it just displays them inside.
+#### Stateless Component: Separate in different Components
+
+First, we will separate out our App into separate Components.     
+eg: separate ```<li>``` in a separate Component
+
+ in App.jsx
+```html
+        <ul>
+          {items.map((todoItem) => (
+            <ToDoItem text={todoItem} />
+          ))}
+        </ul>
+```
+In order to display a different ToDoItem each time we map through our items array,       
+we're going to pass this ToDoItem which is the ```text```(as a prop, we can give it any name) ,      
+this should display as a property.      
+Now we receive this text inside our ToDoItem as one of the props ```{props.text}```    
+
+in ToDoItem.jsx
+```javascript
+import React from "react";
+function ToDoItem(props) {
+  return <li>{props.text}</li>;
+}
+export default ToDoItem;
+```
+
+Right now, we can't modify our props because props is read-only...    
+...But we can have state inside these components.
 
 #### State in individual Components
 
-We can manage state in individual Components.       
 eg: li Element can be lined-through when clicked (click again to cancell style): 
 ```javascript
 import React, { useState } from "react";
@@ -55,10 +81,8 @@ function ToDoItem(props) {
 export default ToDoItem;
 ```
 
-### State in a Parent Component
 
-How to manage state in a Parent Component        
-eg: how to delete a ToDoItem: deleting an item from our items Array (in App.jsx)
+⚠️ Uncomplete
 
 When we pass over props to our child components,       
 we can also pass over functions which gets called by our child component.
@@ -84,3 +108,8 @@ A function that will be placed on App.jsx
 
 ---
 ## What I have learned with this project:
+* How to manage state in a Parent Component  
+* 
+* Separate in different components
+* Manage State in individual components
+* How state is handled across the app and components
