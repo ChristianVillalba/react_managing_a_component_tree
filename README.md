@@ -55,7 +55,9 @@ Right now, we can't modify our props because props is read-only...
 
 #### State in individual Components
 
-eg: li Element can be lined-through when clicked (click again to cancell style): 
+eg: ```<li>```  List Item Element can be lined-through when clicked (click again to cancell style): 
+
+in ToDoItem.jsx 
 ```javascript
 import React, { useState } from "react";
 
@@ -80,9 +82,24 @@ function ToDoItem(props) {
 
 export default ToDoItem;
 ```
+Basic Style:
+We wanted the ```style``` "line through" to be applied,     
+We test if we can use inline styling.      
+Let's tap into the ```style={}``` property and inside it,     
+we add a Javascript Object ```{textDecoration: "line-through"}```     
+as the code and the property was called textDecoration      
+and then the value was called line-through (as a string).     
+The result of the style is ```style={{textDecoration: "line-through"}}```.      
+But we need this to be rendered depending on a condition:  
+if the user has clicked on this to do item ```onClick``` .
 
 
+
+
+---
 ⚠️ Uncomplete
+
+---
 
 When we pass over props to our child components,       
 we can also pass over functions which gets called by our child component.
@@ -108,8 +125,15 @@ A function that will be placed on App.jsx
 
 ---
 ## What I have learned with this project:
+
 * How to manage state in a Parent Component  
-* 
-* Separate in different components
+* Separate App in different Components
+  * Stateless Component
+  * Props
 * Manage State in individual components
+  *  Inline Styling, 
+  *  Conditional Rendering
+  *  Ternary Operators 
+  *  Event Handling and 
+  *  Using State
 * How state is handled across the app and components
