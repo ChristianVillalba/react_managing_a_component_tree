@@ -21,9 +21,10 @@ How our state is handled across the app and different components.
 
 We will transform our app Components     
 from stateless indiviual Components    
-to individual Components with State    
+to Individual Components with State    
+To Components changing the state of the Parent Component      
 
-#### Stateless Component: Separate in different Components
+### Stateless Component: Separate in different Components
 
 First, we will separate out our App into separate Components.     
 eg: separate ```<li>``` in a separate Component
@@ -53,9 +54,9 @@ export default ToDoItem;
 Right now, we can't modify our props because props is read-only...    
 ...But we can have state inside these components.
 
-#### State in individual Components
+### State in individual Components
 
-eg: ```<li>```  List Item Element can be lined-through when clicked (click again to cancell style): 
+eg: ```<li>```  List Item Element can be lined-through when clicked (click again to cancel style): 
 
 in ToDoItem.jsx 
 ```javascript
@@ -82,18 +83,63 @@ function ToDoItem(props) {
 
 export default ToDoItem;
 ```
-Basic Style:
+**Basic Style:**       
+```style={{textDecoration: "line-through"}}```      
 We wanted the ```style``` "line through" to be applied,     
 We test if we can use inline styling.      
 Let's tap into the ```style={}``` property and inside it,     
 we add a Javascript Object ```{textDecoration: "line-through"}```     
 as the code and the property was called textDecoration      
 and then the value was called line-through (as a string).     
-The result of the style is ```style={{textDecoration: "line-through"}}```.      
-But we need this to be rendered depending on a condition:  
-if the user has clicked on this to do item ```onClick``` .
 
+Render our style depending of a condition:     
 
+**When the condition will change:**     
+But we need our style to be rendered depending on a condition:    
+If the user has clicked on this to do item ```onClick```.     
+When it happens I will call a Function ```onClick={handleClick}```.     
+
+**Functions that will be triggered when the condition changes:**     
+When ```onClick``` happens, I want to set a boolean to true or to false depending on      
+whether if this text decoration should be applied:      
+```const [isDone, setIsDone] = useState(false);```       
+I created a const and I will set it to True or False depending on whether if the user clicked on this,    
+to remeber the previous state, we need ```useState```,       
+The Initial Value is setted to false as default (it is not done yet with no line-through).    
+...But  if the user clicks...         
+then I should be able to handle this click ```onClick={handleClick}``` and call ```setIsDone```.
+```javascript
+function handleClick() {
+    setIsDone((prevValue) => {
+      return !prevValue;  // Retrun the opposite to the prevValue
+    });
+  }
+export default ToDoItem;
+```
+And I want to set to the opposite of what it currently is:       
+```setIsDone((prevValue) => {return !prevValue;}```          
+So I use an Arrow Statement to get the previous value ```(prevValue)```      
+and then I can return the opposite of the previous value. ```!prevValue```       
+
+**Change on the conditions will render our style:**    
+Use ```isDone``` to conditionally render our style.
+```javascript
+<li onClick={handleClick} 
+    style={{ textDecoration: isDone ? "line-through" : "none" }}
+    >
+     {props.text}
+</li>
+```
+We have ```textDecoration:``` with  ```CONDITION ? DO IF TRUE : DO IF FALSE``` (2 textDecorations)      
+if ```isDone``` is ```true``` (textDecoration) should be the ```"line-through"```        
+else ```isDone``` is ```false``` (textDecoration) should be the ```"none"```      
+
+This is state being managed inside our ToDoItem, but (state) is localized to this item.      
+What if we wanted to change the state of a parent component?      
+what if we wanted to delete it from our items Array (App.jsx)?     
+How do we reach up from our ToDoItem into its parent     
+
+### State in Parent Component
 
 
 ---
@@ -136,4 +182,7 @@ A function that will be placed on App.jsx
   *  Ternary Operators 
   *  Event Handling and 
   *  Using State
+  *  Arrow Statement
 * How state is handled across the app and components
+  *  An Idividual Component  changing its Parent Component
+     *  Component from ToDoItem.jsx changing the items Array in App.jsx
