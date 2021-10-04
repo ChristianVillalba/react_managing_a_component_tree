@@ -24,18 +24,19 @@ from stateless indiviual Components
 to Individual Components with State    
 To Components changing the state of the Parent Component      
 
-### Stateless Component: Separate in different Components
+---
+## Stateless Component: Separate in different Components
 
 First, we will separate out our App into separate Components.     
 eg: separate ```<li>``` in a separate Component
 
  in App.jsx
 ```html
-        <ul>
+     ...<ul>
           {items.map((todoItem) => (
             <ToDoItem text={todoItem} />
           ))}
-        </ul>
+        </ul>...
 ```
 In order to display a different ToDoItem each time we map through our items array,       
 we're going to pass this ToDoItem which is the ```text```(as a prop, we can give it any name) ,      
@@ -54,7 +55,8 @@ export default ToDoItem;
 Right now, we can't modify our props because props is read-only...    
 ...But we can have state inside these components.
 
-### State in individual Components
+---
+## State in individual Components
 
 eg: ```<li>```  List Item Element can be lined-through when clicked (click again to cancel style): 
 
@@ -114,7 +116,6 @@ function handleClick() {
       return !prevValue;  // Retrun the opposite to the prevValue
     });
   }
-export default ToDoItem;
 ```
 And I want to set to the opposite of what it currently is:       
 ```setIsDone((prevValue) => {return !prevValue;}```          
@@ -130,42 +131,70 @@ Use ```isDone``` to conditionally render our style.
      {props.text}
 </li>
 ```
-We have ```textDecoration:``` with  ```CONDITION ? DO IF TRUE : DO IF FALSE``` (2 textDecorations)      
+Our style is ```textDecoration:``` with  ```CONDITION ? DO IF TRUE : DO IF FALSE``` (2 textDecorations)      
 if ```isDone``` is ```true``` (textDecoration) should be the ```"line-through"```        
-else ```isDone``` is ```false``` (textDecoration) should be the ```"none"```      
+else if ```isDone``` is ```false``` (textDecoration) should be the ```"none"```      
 
 This is state being managed inside our ToDoItem, but (state) is localized to this item.      
 What if we wanted to change the state of a parent component?      
 what if we wanted to delete it from our items Array (App.jsx)?     
 How do we reach up from our ToDoItem into its parent     
 
-### State in Parent Component
-
-
 ---
-⚠️ Uncomplete
+## State in Parent Component
 
----
+When we pass over **props** to our **child components**,       
+we can also pass over **functions** which gets called by our **child component**.
 
-When we pass over props to our child components,       
-we can also pass over functions which gets called by our child component.
+In ToDoItems.jsx
+First, we will need to simplify our ToDoItems 
+```javascript
+import React from "react";
 
-First, we will need to simplify our ToDoItems (in ToDoItems.jsx)
+function ToDoItem(props) {
+  function handleClick() {}
+  return (
+    <div>
+      <li onClick=handleClick>{props.text}</li> 
+    </div>
+  );
+}
+export default ToDoItem;
+```
+
+In our App.jsx     
+In addition to the text property (props), we can add more props: ```onChecked``` (or any name)     
+and set this equal to a function inside our app component ```onChecked={deleteItem}```.     
+```javascript
+     ...<ul>
+          {items.map((todoItem, index) => (
+            <ToDoItem
+              text={todoItem}
+              onChecked={deleteItem}
+            />...
+```
+We create a function ```deleteItem``` and this was the function that we would pass to our child ToDoItem.
+```javascript
+function deleteItem() {}
+```
+Inside our ToDoItem we'll now be able to trigger, instead of ```handleClick```,      
+we can trigger ```props.onChecked```
 ```javascript
 import React from "react";
 
 function ToDoItem(props) {
   return (
     <div>
-      <li onClick={props.onChecked}>{props.text}</li>
+      <li onClick={props.onChecked}>{props.text}</li> 
     </div>
   );
 }
-
 export default ToDoItem;
 ```
 In our ToDoItems.jsx the Attribute ```onClick``` will trigger ```props.onChecked```,       
-A function that will be placed on App.jsx
+In App.jsx, the props ```onChecked``` will trigger the function ```deleteItem```
+
+
 
 
 
