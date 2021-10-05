@@ -214,10 +214,14 @@ and inside of it, I'll need to get hold of the previous item ```(prevItems) => {
 but how to delete the specific item the requested deletion?
 
 To delete the item that requested the deletion:         
-When I call this onChecked, I could pass over something that identifies this particular ToDoItem      
+When I call ```onChecked```(in ToDoItem.jsx), I could pass over something that identifies this particular ToDoItem:      
+In App.jsx      
 We add ```id``` (props).
-Remember that when we ```.map()``` through arrays and create components we should always have a ```key```.     
-We add ```key``` (props).
+Remember that when we ```.map()``` through arrays and create components we should always have a ```key```.      
+We add ```key``` (props). We set this ```key``` to the ```index``` of the ToDoItem from the items array.     
+map function actually gives us a really easy way of accessing index:   
+
+
 ```javascript
      ...<ul>
           {items.map((todoItem, index) => (
@@ -247,5 +251,7 @@ We add ```key``` (props).
   *  Using State
   *  Arrow Statement
 * How state is handled across the app and components
-  *  An Idividual Component  changing its Parent Component
+  *  An Individual Component changing its Parent Component
      *  Component from ToDoItem.jsx changing the items Array in App.jsx
+  *  How to target the specific item from a list (JS Array) 
+  *  
