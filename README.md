@@ -19,9 +19,10 @@ This app is a To-Do List consisting of:
 ### Managing A Component Tree:
 How our state is handled across the app and different components.      
 
-We will transform our app Components     
-from stateless indiviual Components    
-to Individual Components with State    
+From the [Starting Files](https://codesandbox.io/s/es6-spread-operator-practice-completed-mm4qj?fontsize=14&hidenavigation=1&theme=dark&file=/src/components/App.jsx),
+we will transform our app Components:     
+To stateless indiviual Components...    
+To Individual Components with State...    
 To Components changing the state of the Parent Component      
 
 ---
@@ -146,7 +147,7 @@ How do we reach up from our ToDoItem into its parent
 When we pass over **props** to our **child components**,       
 we can also pass over **functions** which gets called by our **child component**.
 
-In ToDoItems.jsx
+In ToDoItems.jsx       
 First, we will need to simplify our ToDoItems 
 ```javascript
 import React from "react";
@@ -175,9 +176,12 @@ and set this equal to a function inside our app component ```onChecked={deleteIt
 ```
 We create a function ```deleteItem``` and this was the function that we would pass to our child ToDoItem.
 ```javascript
-function deleteItem() {}
+function deleteItem() {console.log("deleteItem function was called")}
+// console.log for testing
 ```
-Inside our ToDoItem we'll now be able to trigger, instead of ```handleClick```,      
+
+In ToDoItem.jsx        
+We'll now be able to trigger, instead of ```handleClick```,      
 we can trigger ```props.onChecked```
 ```javascript
 import React from "react";
@@ -191,11 +195,41 @@ function ToDoItem(props) {
 }
 export default ToDoItem;
 ```
-In our ToDoItems.jsx the Attribute ```onClick``` will trigger ```props.onChecked```,       
-In App.jsx, the props ```onChecked``` will trigger the function ```deleteItem```
 
+In  ToDoItems.jsx the Attribute ```onClick``` will trigger ```props.onChecked```,       
+In App.jsx, the props ```onChecked``` will trigger the function ```deleteItem```      
+(right now, the console will print "deleteItem function was called").
+<!-- This means the entire function ```deleteItem``` is being packaged up      
+and sent over to the ```<ToDoItem ... ... />``` under the prop ```onChecked```.
+And then that prop is only triggered when the div detects a click (onClick). -->
+In App.jsx
+Now that we tested the the function ```deleteItem``` works,  we can address its functionality 
+```javascript
+  function deleteItem() {
+    setItems((prevItems) => {});
+  }
+```
+If I wanted to delete an item from my items Array (App.jsx), I'm going to need to call ```setItems()```,      
+and inside of it, I'll need to get hold of the previous item ```(prevItems) => {}```     
+but how to delete the specific item the requested deletion?
 
-
+To delete the item that requested the deletion:         
+When I call this onChecked, I could pass over something that identifies this particular ToDoItem      
+We add ```id``` (props).
+Remember that when we ```.map()``` through arrays and create components we should always have a ```key```.     
+We add ```key``` (props).
+```javascript
+     ...<ul>
+          {items.map((todoItem, index) => (
+            <ToDoItem
+              key={index}
+              id={index}
+              text={todoItem}
+              onChecked={deleteItem}
+            />
+          ))}
+        </ul>...
+```
 
 
 ---
