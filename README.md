@@ -202,7 +202,7 @@ In App.jsx, the props ```onChecked``` will trigger the function ```deleteItem```
 <!-- This means the entire function ```deleteItem``` is being packaged up      
 and sent over to the ```<ToDoItem ... ... />``` under the prop ```onChecked```.
 And then that prop is only triggered when the div detects a click (onClick). -->
-In App.jsx
+In App.jsx      
 Now that we tested the the function ```deleteItem``` works,  we can address its functionality 
 ```javascript
   function deleteItem() {
@@ -211,17 +211,12 @@ Now that we tested the the function ```deleteItem``` works,  we can address its 
 ```
 If I wanted to delete an item from my items Array (App.jsx), I'm going to need to call ```setItems()```,      
 and inside of it, I'll need to get hold of the previous item ```(prevItems) => {}```     
-but how to delete the specific item the requested deletion?
+...but how to delete the specific item that requested deletion?
 
-To delete the item that requested the deletion:         
-When I call ```onChecked```(in ToDoItem.jsx), I could pass over something that identifies this particular ToDoItem:      
-In App.jsx      
-We add ```id``` (props).
-Remember that when we ```.map()``` through arrays and create components we should always have a ```key```.      
-We add ```key``` (props). We set this ```key``` to the ```index``` of the ToDoItem from the items array.     
-map function actually gives us a really easy way of accessing index:   
+To delete specific item that requested the deletion:         
+When I call ```onChecked```(in ToDoItem.jsx), I could pass over something that **identifies** this particular **ToDoItem**:      
 
-
+In App.jsx  
 ```javascript
      ...<ul>
           {items.map((todoItem, index) => (
@@ -234,6 +229,72 @@ map function actually gives us a really easy way of accessing index:
           ))}
         </ul>...
 ```
+We add ```id``` (props).
+Remember: when we `.map()` through arrays and create components we should always have a `key`.      
+We add `key` (props). We set this `key` to the `index` of the ToDoItem from the items array.     
+map function actually gives us a really easy way of accessing index:      
+Hoover over `map` and access a list of callback function:     
+the first item is the value, the next one is the index `(todoItem,index)`     
+React advises us to not use the `index` for the `key` and instead use some sort of **unique identifying** string,     
+However, we want to use this `index` value and we want to use it to pass over to our `ToDoItem` as an `id` (props).     
+Otherwise, use this package to generate UUIDs [npm - uuid (Universally Unique IDentifier)](https://www.npmjs.com/package/uuid)     
+
+in ToDoItem.jsx
+```javascript
+import React from "react";
+
+function ToDoItem(props) {
+  return (
+    <div
+      onClick={() => {props.onChecked(props.id);}}
+    >
+      <li>{props.text}</li>
+    </div>
+  );
+}
+
+export default ToDoItem;
+```
+`onClick={() => {}}`    
+We create a function* inside of it that will called only when `onClick` gets trigger.   
+`props.onChecked(props.id)`        
+We call `onChecked` (props) passing over an `id` (props) that **identifies** a particular **ToDoItem**
+
+Remember: When we have a set of parentheses and something inside it,     
+we're calling the function rather than passing the function.      
+In other words, we call the function immediately the moment that this ToDoItem gets rendered.     
+For this reason we need to create a function `onClick = {() => {}}`    
+eg: `onClick={props.onChecked(props.id)}` . (props.id) will instantly trigger `onChecked={deleteItem}` (in App.jsx)
+
+in App.jsx     
+Now that we can get hold of the `id` of the `<ToDoItem ... />`,       
+we can pass it (`id`) on the `deleteItem` function to target an specific element.
+```javascript
+  function deleteItem(id) {
+    setItems((prevItems) => {
+      return prevItems.filter((item, index) => {
+        return index !== id;
+      });
+    });
+  }
+```
+`deleteItem(id)` call `setItems`, to change the items Array.      
+The `filter` function will filter through all of the previous items (`prevItems`) in our items array       
+and get rid of the ones which match this `id`.     
+
+Inside of `setItems()`     
+`return prevItems.filter((item, index)... `
+we're going to return a array constructed from `prevItems` previous items array,      
+but it's going to be `filter()` so we get rid of the selected item (the item with the `id` passed over).   
+
+`.filter()` function expects a function itself.      
+We use an Arrow Function `() => {}` inside our filter function: `.filter(() => {})`     
+
+Inside our `.filter()` function, we have access to two properties:
+* The actual element that's being looped through in the array
+* The second one is the index of the current element.
+`.filter((item , index) => {})`
+
 
 
 ---
@@ -254,4 +315,4 @@ map function actually gives us a really easy way of accessing index:
   *  An Individual Component changing its Parent Component
      *  Component from ToDoItem.jsx changing the items Array in App.jsx
   *  How to target the specific item from a list (JS Array) 
-  *  
+  *  Difference: Passing Funtions or Calling Functions   
