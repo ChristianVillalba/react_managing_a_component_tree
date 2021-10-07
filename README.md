@@ -237,7 +237,7 @@ Hoover over `map` and access a list of callback function:
 the first item is the value, the next one is the index `(todoItem,index)`     
 React advises us to not use the `index` for the `key` and instead use some sort of **unique identifying** string,     
 However, we want to use this `index` value and we want to use it to pass over to our `ToDoItem` as an `id` (props).     
-Otherwise, use this package to generate UUIDs [npm - uuid (Universally Unique IDentifier)](https://www.npmjs.com/package/uuid)     
+Otherwise, use this package to generate UUIDs [npm - uuid (Universally Unique IDentifier)](https://www.npmjs.com/package/uuid)       
 
 in ToDoItem.jsx
 ```javascript
@@ -288,13 +288,37 @@ we're going to return a array constructed from `prevItems` previous items array,
 but it's going to be `filter()` so we get rid of the selected item (the item with the `id` passed over).   
 
 `.filter()` function expects a function itself.      
-We use an Arrow Function `() => {}` inside our filter function: `.filter(() => {})`     
+We use an Arrow Function `() => {}` inside our filter function:        
+`.filter(() => {})`     
 
-Inside our `.filter()` function, we have access to two properties:
-* The actual element that's being looped through in the array
-* The second one is the index of the current element.
-`.filter((item , index) => {})`
+`.filter((item , index => {})`     
+Inside our `.filter()` function, we have access to two properties: 
+* The first one is the actual element that's being looped through in the array
+* The second one is the index of the current element.      
+* [Array.prototype.filter() > Parameters + Sytax Arrow function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) 
 
+`prevItems.filter((item , index) => {})`     
+Now we're going to go through our array of previous items  `prevItems` ,     
+look through each `item` and get the `index` (of each item)   
+And we're going to return `=>` an output, a final array `{}`
+
+`prevItems.filter((item , index) => {return index !== id;})`        
+`return index !== id`  is going to `return`       
+all the items where the `index` is not equal `!=` to the `id` being passed over.
+
+**Checking our Element in DevTools:**     
+We add a new Item       
+It went into the items Array with the `index` of 0, so it's the first item.      
+And the `id` got passed over to the `ToDoItem` Component as a prop.  
+
+In addition, there's another prop, `onChecked`,     
+which passed over the `deleteItem` function.     
+And when I click (`onClick`) on this `ToDoItem`, it will trigger `deleteItem`    
+and it will pass over the `id` as the input.    
+Then we get to receive that `id` which equates to the `index` of the item that we're trying to delete.     
+And then we call `setItems` to update our list (Array) of items 
+and we `filter` it so that we only end up with
+the ones where the `index` does **not** match this `id`,
 
 
 ---
@@ -316,3 +340,9 @@ Inside our `.filter()` function, we have access to two properties:
      *  Component from ToDoItem.jsx changing the items Array in App.jsx
   *  How to target the specific item from a list (JS Array) 
   *  Difference: Passing Funtions or Calling Functions   
+     *  Map , Filter & Reduce will expect functions insideo of them `() => {}`
+     *  Otherwise , they will be called immediately
+     *  Map , Filter & Reduce return an output
+* Functional programming is hard.
+  * Difficult things take a long time.
+  * No retreat, no surrender.   
